@@ -6,6 +6,8 @@ import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import sveltePreprocess from 'svelte-preprocess';
+import gzipPlugin from 'rollup-plugin-gzip';
+
 import pkg from './package.json';
 
 const mode = process.env.NODE_ENV;
@@ -75,6 +77,7 @@ export default {
         terser({
           module: true,
         }),
+      !dev && gzipPlugin(),
     ],
 
     preserveEntrySignatures: false,
@@ -119,6 +122,7 @@ export default {
       }),
       commonjs(),
       !dev && terser(),
+      !dev && gzipPlugin(),
     ],
 
     preserveEntrySignatures: false,
