@@ -6,7 +6,7 @@ const getCurrentState = () => get(currentPersonStore);
 function createCurrentPersonStore(){
   const { subscribe, update, set } = writable();
 
-  const fetchPerson = personId => fetch(`https://swapi.dev/api/people/${personId}`)
+  const fetchPerson = personId => fetch(`https://jsonplaceholder.typicode.com/posts/${personId}`)
     .then(response => response.json())
     .then(data => ({...data, id: personId}));
 
