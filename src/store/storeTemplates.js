@@ -3,7 +3,7 @@ import { writable, derived, get } from 'svelte/store';
 export function derivedPromisable(
   derivedStore,
   promiseFunction,
-  shouldRefresh = () => true
+  shouldRefreshPromise = () => true
 ) {
   if (!derivedStore)
     throw new Error('You should provide a store to derive from');
@@ -19,7 +19,7 @@ export function derivedPromisable(
     const currentState = getCurrentState();
     const createPromise = (currentStateData) => {
       if (
-        shouldRefresh($derivedStore, previousDerivedState, currentStateData)
+        shouldRefreshPromise($derivedStore, previousDerivedState, currentStateData)
       ) {
         if ($derivedStore && derivedStore.isPromisable){
           $derivedStore.then(data => set(promiseFunction(data)));
@@ -32,7 +32,7 @@ export function derivedPromisable(
 
     if (currentState) {
       // since the last promise could have been rejected,
-      // we should let shouldRefresh decide to initiate it again or not
+      // we should let shouldRefreshPromise decide to initiate it again or not
       currentState.then(createPromise).catch(createPromise);
     } else {
       createPromise();
@@ -45,7 +45,7 @@ export function derivedPromisable(
   return store;
 }
 
-export function promisable(promiseFunction, shouldRefresh = () => true) {
+export function promisable(promiseFunction, shouldRefreshPromise = () => true) {
   if (!promiseFunction && typeof promiseFunction !== Function) {
     throw new Error(
       `The provided promiseFunction was not a function. It was ${typeof promiseFunction}.`
@@ -58,12 +58,12 @@ export function promisable(promiseFunction, shouldRefresh = () => true) {
   const dispatch = (args) => {
     const currentState = getCurrentState(store);
     const createPromise = (currentStateData) => {
-      if (shouldRefresh(args, currentStateData)) set(promiseFunction(args));
+      if (shouldRefreshPromise(args, currentStateData)) set(promiseFunction(args));
     };
 
     if (currentState) {
       // since the last promise could have been rejected,
-      // we should let shouldRefresh decide to initiate it again or not
+      // we should let shouldRefreshPromise decide to initiate it again or not
       currentState.then(createPromise).catch(createPromise);
     } else {
       createPromise();
