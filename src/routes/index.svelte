@@ -1,6 +1,7 @@
 <script>
   import SearchInput from './_components/SearchInput.svelte';
   import SearchResults from './_components/SearchResults.svelte';
+  import Person from './person/[personId].svelte';
 </script>
 
 <style>
@@ -14,11 +15,11 @@
 </style>
 
 <svelte:head>
-  <title>Sapper SW API</title>
+  <title>JSONPlaceholder Sapper API</title>
 </svelte:head>
 
 <main>
-  <h1>Star Wars API</h1>
+  <h1>JSONPlaceholder Sapper API</h1>
   <SearchInput />
   <SearchResults />
 </main>

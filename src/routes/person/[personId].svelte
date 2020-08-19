@@ -9,7 +9,7 @@
   const { personId } = $page.params;
 
   onMount(() => {
-    currentPerson.getPersonFromApi(personId);
+    currentPerson.dispatch(parseInt(personId));
   });
 </script>
 
@@ -19,7 +19,9 @@
   <dl>
     {#each _entries($currentPerson) as [label, value]}
       <dt>{_capitalize(label)}</dt>
-      <dd>{value}</dd>
+      <dd>{JSON.stringify(value)}</dd>
     {/each}
   </dl>
+{:catch}
+  <h1>Person not found</h1>
 {/await}
