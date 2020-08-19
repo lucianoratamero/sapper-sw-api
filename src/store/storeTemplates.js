@@ -12,6 +12,11 @@ export function derivedPromisable(
       `The provided promiseFunction was not a function. It was ${typeof promiseFunction}.`
     );
   }
+  if (shouldRefreshPromise && typeof shouldRefreshPromise !== Function) {
+    throw new Error(
+      `The provided shouldRefreshPromise was not a function. It was ${typeof shouldRefreshPromise}.`
+    );
+  }
 
   let previousDerivedState;
 
@@ -19,12 +24,16 @@ export function derivedPromisable(
     const currentState = getCurrentState();
     const createPromise = (currentStateData) => {
       if (
-        shouldRefreshPromise($derivedStore, previousDerivedState, currentStateData)
+        shouldRefreshPromise(
+          $derivedStore,
+          previousDerivedState,
+          currentStateData
+        )
       ) {
-        if ($derivedStore && derivedStore.isPromisable){
-          $derivedStore.then(data => set(promiseFunction(data)));
+        if ($derivedStore && derivedStore.isPromisable) {
+          $derivedStore.then((data) => set(promiseFunction(data)));
         } else if ($derivedStore) {
-          set(promiseFunction($derivedStore))
+          set(promiseFunction($derivedStore));
         }
         previousDerivedState = get(derivedStore);
       }
@@ -51,6 +60,12 @@ export function promisable(promiseFunction, shouldRefreshPromise = () => true) {
       `The provided promiseFunction was not a function. It was ${typeof promiseFunction}.`
     );
   }
+  if (shouldRefreshPromise && typeof shouldRefreshPromise !== Function) {
+    throw new Error(
+      `The provided shouldRefreshPromise was not a function. It was ${typeof shouldRefreshPromise}.`
+    );
+  }
+
   const store = writable();
   const { set } = store;
   const getCurrentState = () => get(store);
@@ -58,7 +73,8 @@ export function promisable(promiseFunction, shouldRefreshPromise = () => true) {
   const dispatch = (args) => {
     const currentState = getCurrentState(store);
     const createPromise = (currentStateData) => {
-      if (shouldRefreshPromise(args, currentStateData)) set(promiseFunction(args));
+      if (shouldRefreshPromise(args, currentStateData))
+        set(promiseFunction(args));
     };
 
     if (currentState) {
