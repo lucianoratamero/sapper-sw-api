@@ -1,7 +1,6 @@
 <script>
   import people from '../../store/people.store';
   import searchTerm from '../../store/searchTerm.store';
-
 </script>
 
 {#if $searchTerm}
@@ -13,5 +12,7 @@
         <h1>Name: {person.name}</h1>
       </a>
     {/each}
+  {:catch}
+    <h1>ohno</h1>
   {/await}
 {/if}

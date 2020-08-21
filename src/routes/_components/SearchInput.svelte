@@ -4,7 +4,7 @@
 
   function handleKeyup(value){
     clearTimeout(timer);
-    timer = setTimeout(() => searchTerm.update(state => state = value), 500);
+    timer = setTimeout(() => searchTerm.set(value), 500);
   }
 </script>
 

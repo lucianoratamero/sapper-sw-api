@@ -9,6 +9,8 @@ const fetchPerson = (personId) =>
 
 export default promisable(
   fetchPerson,
-  (personId, currentStateData) =>
-    !currentStateData || personId !== currentStateData.id
+  (currentStateData, personId) =>
+    !currentStateData || personId != currentStateData.id
 );
+
+// encapsulate args and kwargs when calling shouldRefreshPromis

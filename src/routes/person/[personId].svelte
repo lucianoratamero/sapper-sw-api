@@ -9,7 +9,7 @@
   const { personId } = $page.params;
 
   onMount(() => {
-    currentPerson.dispatch(parseInt(personId));
+    currentPerson.dispatch(personId);
   });
 </script>
 
@@ -22,6 +22,6 @@
       <dd>{JSON.stringify(value)}</dd>
     {/each}
   </dl>
-{:catch}
+{:catch $currentPerson}
   <h1>Person not found</h1>
 {/await}
